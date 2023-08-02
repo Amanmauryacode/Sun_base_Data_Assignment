@@ -1,10 +1,8 @@
-# Sun_base_Data_Assignment# Customer Management System
-
-![GitHub](link)
+# Customer Management System
 
 ## Description
 
-This project implements a Customer Management System that integrates with a set of APIs to perform various operations such as authentication, creating, updating, listing, and deleting customers. The APIs are provided by the backend service at https://qa2.sunbasedata.com/sunbase/portal/api.
+This project implements a Customer Management System that integrates with a set of APIs to perform various operations such as authentication, creating, updating, listing, and deleting customers. The APIs are provided by the backend service at http://localhost:8088/sunbase/portal/api/assignment.
 
 The project is designed to have a basic UI in HTML that allows users to perform the following actions:
 
@@ -20,7 +18,7 @@ The project is designed to have a basic UI in HTML that allows users to perform 
 
 ## API Endpoints
 
-[Complete API documentation](./API.md)
+[Complete API documentation](https://drive.google.com/file/d/1uIFMT46kiNK3CIZLyfdLuQPKmj8SG5E6/view?usp=sharing)
 
 ## Basic Steps to Use the Application
 
@@ -49,5 +47,19 @@ Contributions are welcome! Here's how you can contribute to the project:
 3. Push to your branch: `git push origin feature/new-feature`.
 
 4. Create a pull request.
+
+## Screeshort
+![Screenshot (1)](https://github.com/Amanmauryacode/Sun_base_Data_Assignment/assets/105871693/1d159f47-1a51-494c-b9b8-125b18d8868b)
+
+
+![Screenshot (2)](https://github.com/Amanmauryacode/Sun_base_Data_Assignment/assets/105871693/d9ef8330-813b-481d-9e87-d0cac65807a8)
+![Screenshot (3)](https://github.com/Amanmauryacode/Sun_base_Data_Assignment/assets/105871693/b79f1b85-258e-4e98-b951-f8d8da323911)
+
+![Screenshot (4)](https://github.com/Amanmauryacode/Sun_base_Data_Assignment/assets/105871693/67d3e955-329c-4768-88a2-a5b1beb682dd)
+![Screenshot (5)](https://github.com/Amanmauryacode/Sun_base_Data_Assignment/assets/105871693/157af16c-f279-4e17-814c-4221d9b6909c)
+
+
+
+
 
 
