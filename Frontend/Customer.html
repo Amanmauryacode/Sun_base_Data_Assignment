@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Heading styles */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        /* Button styles */
+        button {
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Edit and Delete button styles */
+        .icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* Edit and Add form styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .edit-form,
+        .add-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 999;
+        }
+
+        .form-input {
+            margin-bottom: 15px;
+        }
+
+        .form-input label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-input input[type="text"],
+        .form-input input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        /* Form Submit Button styles */
+        .form-buttons button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-buttons button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Customer Management</h1>
+    <button onclick="showAddForm()">Add New Customer</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="customerTable">
+            <!-- Customer data will be populated dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Edit Customer Form -->
+    <div class="overlay" id="editOverlay"></div>
+    <div class="edit-form" id="editForm">
+        <h2>Edit Customer</h2>
+        <div class="form-input">
+            <label for="editid">Id:</label>
+            <input type="text" id="editid" disabled>
+        </div>
+        <div class="form-input">
+            <label for="editFirstName">First Name:</label>
+            <input type="text" id="editFirstName" required>
+        </div>
+        <div class="form-input">
+            <label for="editLastName">Last Name:</label>
+            <input type="text" id="editLastName" required>
+        </div>
+        <div class="form-input">
+            <label for="editAddress">Address:</label>
+            <input type="text" id="editAddress" required>
+        </div>
+        <div class="form-input">
+            <label for="editCity">City:</label>
+            <input type="text" id="editCity" required>
+        </div>
+        <div class="form-input">
+            <label for="editState">State:</label>
+            <input type="text" id="editState" required>
+        </div>
+        <div class="form-input">
+            <label for="editEmail">Email:</label>
+            <input type="email" id="editEmail" required>
+        </div>
+        <div class="form-input">
+            <label for="editPhone">Phone:</label>
+            <input type="text" id="editPhone" required>
+        </div>
+        <div class="form-buttons">
+            <button onclick="updateCustomer()">Save</button>
+            <button onclick="hideEditForm()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Add Customer Form -->
+    <div class="overlay" id="addOverlay"></div>
+    <div class="add-form" id="addForm">
+        <h2>Add New Customer</h2>
+        <div class="form-input">
+            <label for="addFirstName">First Name:</label>
+            <input type="text" id="addFirstName" required>
+        </div>
+        <div class="form-input">
+            <label for="addLastName">Last Name:</label>
+            <input type="text" id="addLastName" required>
+        </div>
+        <div class="form-input">
+            <label for="addAddress">Address:</label>
+            <input type="text" id="addAddress" required>
+        </div>
+        <div class="form-input">
+            <label for="addCity">City:</label>
+            <input type="text" id="addCity" required>
+        </div>
+        <div class="form-input">
+            <label for="addState">State:</label>
+            <input type="text" id="addState" required>
+        </div>
+        <div class="form-input">
+            <label for="addEmail">Email:</label>
+            <input type="email" id="addEmail" required>
+        </div>
+        <div class="form-input">
+            <label for="addPhone">Phone:</label>
+            <input type="text" id="addPhone" required>
+        </div>
+        <div class="form-buttons">
+            <button onclick="addCustomer()">Add</button>
+            <button onclick="hideAddForm()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem("token") || "";
+        var customers = [];
+
+        function fetchCustomerData() {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8088/sunbase/portal/api/assignment/get-customers", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log("Success")
+                    customers = result;
+                    displayCustomers();
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        // Function to display customer data in the table
+        function displayCustomers() {
+            const customerTable = document.getElementById('customerTable');
+            customerTable.innerHTML = '';
+
+            customers.forEach(customer => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+
+        <td>${customer.id}</td>
+          <td>${customer.firstName}</td>
+          <td>${customer.lastName}</td>
+          <td>${customer.address}</td>
+          <td>${customer.city}</td>
+          <td>${customer.state}</td>
+          <td>${customer.email}</td>
+          <td>${customer.phone}</td>
+          <td>
+            <button class="icon" onclick="showEditForm('${customer.id}')">&#9998;</button>
+            <button class="icon" onclick="deleteCustomer('${customer.id}')">&#10006;</button>
+          </td>
+        `;
+                customerTable.appendChild(row);
+            });
+        }
+
+        // Function to show the edit form with customer data
+        function showEditForm(id) {
+            const customer = customers.find(cust => cust.id == id);
+            if (customer) {
+                document.getElementById('editOverlay').style.display = 'block';
+                document.getElementById('editForm').style.display = 'block';
+                document.getElementById('editid').value = customer.id;
+                document.getElementById('editFirstName').value = customer.firstName;
+                document.getElementById('editLastName').value = customer.lastName;
+                document.getElementById('editAddress').value = customer.address;
+                document.getElementById('editCity').value = customer.city;
+                document.getElementById('editState').value = customer.state;
+                document.getElementById('editEmail').value = customer.email;
+                document.getElementById('editPhone').value = customer.phone;
+            }
+        }
+
+        // Function to hide the edit form
+        function hideEditForm() {
+            document.getElementById('editOverlay').style.display = 'none';
+            document.getElementById('editForm').style.display = 'none';
+        }
+
+        // Function to update the customer data
+        function updateCustomer() {
+            const id = document.getElementById('editid').value;
+            
+            const customer = customers.find(cust => cust.id == id);
+            if (customer) {
+                customer.firstName = document.getElementById('editFirstName').value;
+                customer.lastName = document.getElementById('editLastName').value;
+                customer.address = document.getElementById('editAddress').value;
+                customer.city = document.getElementById('editCity').value;
+                customer.state = document.getElementById('editState').value;
+                customer.phone = document.getElementById('editPhone').value;
+
+                console.log(customer)
+                updateFetch(customer,id);
+                fetchCustomerData();
+                hideEditForm();
+            }
+        }
+
+        // Function to delete the customer
+        function deleteCustomer(id) {
+
+            deleteFetch(id)
+            fetchCustomerData();
+
+        }
+
+        // Function to show the add form
+        function showAddForm() {
+            document.getElementById('addOverlay').style.display = 'block';
+            document.getElementById('addForm').style.display = 'block';
+        }
+
+        // Function to hide the add form
+        function hideAddForm() {
+            document.getElementById('addOverlay').style.display = 'none';
+            document.getElementById('addForm').style.display = 'none';
+        }
+
+        // Function to add a new customer
+        function addCustomer() {
+            const firstName = document.getElementById('addFirstName').value;
+            const lastName = document.getElementById('addLastName').value;
+            const address = document.getElementById('addAddress').value;
+            const city = document.getElementById('addCity').value;
+            const state = document.getElementById('addState').value;
+            const email = document.getElementById('addEmail').value;
+            const phone = document.getElementById('addPhone').value;
+
+            const newCustomer = {
+                firstName,
+                lastName,
+                address,
+                city,
+                state,
+                email,
+                phone
+            };
+
+            if (firstName === "" && lastName === "" && address === "" && city === "" && state === "" && email === "" && phone === "") {
+                alert("Body is Null")
+            } else {
+                console.log(newCustomer)
+                addFetch(newCustomer);
+            }
+
+            fetchCustomerData();
+            hideAddForm();
+        }
+
+        function addFetch(customerData) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            var raw = JSON.stringify(customerData);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8088/sunbase/portal/api/assignment/create-customer?cmd=create", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    alert(result)
+                    location.reload()
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function deleteFetch(uuid) {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8088/sunbase/portal/api/assignment/customer?cmd=delete&uuid=" + uuid, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    alert(result)
+                    location.reload()
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function updateFetch(updatedData, uuid) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            var raw = JSON.stringify(updatedData);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8088/sunbase/portal/api/assignment/customer?cmd=update&uuid=" + uuid, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    alert(result)
+                    location.reload()
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        fetchCustomerData()
+
+    </script>
+</body>
+
+</html>
